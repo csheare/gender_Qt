@@ -1,4 +1,3 @@
-
 #include <QtWidgets>
 #include <QLabel>
 #include <QPushButton>
@@ -8,8 +7,6 @@
 
 #include "window.h"
 
-
-
 Window::Window()
 {
     createGUI();
@@ -17,7 +14,7 @@ Window::Window()
 void Window::showMeCat(){
 
     QLabel * myImageLabel = new QLabel();
-    QPixmap myImage("C:/Users/csheare/Documents/GitHub/gender_Qt/cat.jpg");
+    QPixmap myImage(cat);
     myImageLabel->setPixmap(myImage);
     layout->addWidget(myImageLabel,5,0);
     this->show();
@@ -26,10 +23,11 @@ void Window::showMeCat(){
 void Window::showMeDog(){
 
     QLabel * myImageLabel = new QLabel();
-    QPixmap myImage("C:/Users/csheare/Documents/GitHub/gender_Qt/dog.png");
+    QPixmap myImage(dog);
     myImageLabel->setPixmap(myImage);
     layout->addWidget(myImageLabel,5,0);
     this->show();
+    //this->setGeometry(50,50,150,200);
 }
 
 void Window::showMeBoth(){
@@ -38,12 +36,12 @@ void Window::showMeBoth(){
     QScrollArea * scrollArea = new QScrollArea();
 
     QLabel * myImageLabelCat = new QLabel();
-    QPixmap myImageCat("C:/Users/csheare/Documents/GitHub/gender_Qt/cat.jpg");
+    QPixmap myImageCat(cat);
     myImageLabelCat->setPixmap(myImageCat);
     scrollLayout->addWidget(myImageLabelCat,0,0);
 
     QLabel * myImageLabelDog = new QLabel();
-    QPixmap myImageDog("C:/Users/csheare/Documents/GitHub/gender_Qt/dog.png");
+    QPixmap myImageDog(dog);
     myImageLabelDog->setPixmap(myImageDog);
     scrollLayout->addWidget(myImageLabelDog,1,0);
 
@@ -61,15 +59,23 @@ void Window::createGUI()
     layout = new QGridLayout;
 
     //add name label
+    QLabel *myCatLabel = new QLabel();
+    QString cat = "Cat Image Upload: ";
+    myCatLabel->setText(cat);
+    layout->addWidget(myCatLabel,0,0);
+
+    QPushButton * button = new QPushButton("Cat Browse");
+    connect(button, SIGNAL(clicked()),SLOT(browseCat()));
+    layout->addWidget(button,0,1);
+
     QLabel *myNameLabel = new QLabel();
-    QString name = "Name: ";
-    myNameLabel->setText(name);
-    layout->addWidget(myNameLabel,0,0);
+    QString dog = "Dog Image Upload: ";
+    myNameLabel->setText(dog);
+    layout->addWidget(myNameLabel,1,0);
 
-    //add text box
-    QTextEdit *te = new QTextEdit();
-    layout->addWidget(te,1,0);
-
+    QPushButton * button2 = new QPushButton("Dog Browse");
+    connect(button2, SIGNAL(clicked()), SLOT(browseDog()));
+    layout->addWidget(button2,1,1);
 
     //add Radio Buttons
     catButton = new QRadioButton("cat");
@@ -90,3 +96,28 @@ void Window::createGUI()
 
 }
 
+
+void Window::browseCat()
+{
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("Images (*.png *.xpm *.jpg)"));
+    dialog.setViewMode(QFileDialog::Detail);
+
+    QStringList fileNames;
+    if (dialog.exec())
+        fileNames = dialog.selectedFiles();
+    cat = fileNames.at(0);
+}
+void Window::browseDog()
+{
+    QFileDialog dialog(this);
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setNameFilter(tr("Images (*.png *.xpm *.jpg)"));
+    dialog.setViewMode(QFileDialog::Detail);
+
+    QStringList fileNames;
+    if (dialog.exec())
+        fileNames = dialog.selectedFiles();
+    dog = fileNames.at(0);
+}
