@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 #include<QWidget>
-#include<QComboBox>
+#include<QRadioButton>
 #include<QGridLayout>
 class Window : public QWidget
 {
@@ -10,11 +10,15 @@ class Window : public QWidget
 
 public:
     Window();
-    QComboBox* qb;
+    QRadioButton * catButton;
+    QRadioButton * dogButton;
+    QRadioButton * bothButton;
     QGridLayout* layout;
 
 public slots:
-    void showMe();
+    void showMeCat();
+    void showMeDog();
+    void showMeBoth();
 
 private:
     void createGUI();
@@ -23,7 +27,6 @@ private:
 
 #endif
 
-//make sure I understand slots and signals
 //click image and sends to wiki(Qurl)
 //vertical scroll window
 //create a text editor

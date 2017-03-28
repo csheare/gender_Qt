@@ -14,22 +14,45 @@ Window::Window()
 {
     createGUI();
 }
-void Window::showMe(){
+void Window::showMeCat(){
 
     QLabel * myImageLabel = new QLabel();
-    QPixmap myImage;
-    if(qb->currentText() == "cat"){
-         myImage.load("C:/Users/csheare/Desktop/gender_Qt/cat.jpg");
-    }
-    else{
-       myImage.load("C:/Users/csheare/Desktop/gender_Qt/dog.png");
-    }
-
+    QPixmap myImage("C:/Users/csheare/Documents/GitHub/gender_Qt/cat.jpg");
     myImageLabel->setPixmap(myImage);
-    layout->addWidget(myImageLabel,4,0);
+    layout->addWidget(myImageLabel,5,0);
     this->show();
+}
 
+void Window::showMeDog(){
 
+    QLabel * myImageLabel = new QLabel();
+    QPixmap myImage("C:/Users/csheare/Documents/GitHub/gender_Qt/dog.png");
+    myImageLabel->setPixmap(myImage);
+    layout->addWidget(myImageLabel,5,0);
+    this->show();
+}
+
+void Window::showMeBoth(){
+    QWidget *temp = new QWidget();
+    QGridLayout *scrollLayout = new QGridLayout();
+    QScrollArea * scrollArea = new QScrollArea();
+
+    QLabel * myImageLabelCat = new QLabel();
+    QPixmap myImageCat("C:/Users/csheare/Documents/GitHub/gender_Qt/cat.jpg");
+    myImageLabelCat->setPixmap(myImageCat);
+    scrollLayout->addWidget(myImageLabelCat,0,0);
+
+    QLabel * myImageLabelDog = new QLabel();
+    QPixmap myImageDog("C:/Users/csheare/Documents/GitHub/gender_Qt/dog.png");
+    myImageLabelDog->setPixmap(myImageDog);
+    scrollLayout->addWidget(myImageLabelDog,1,0);
+
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(temp);
+    temp->setLayout(scrollLayout);
+
+    layout->addWidget(scrollArea,5,0);
+    this->show();
 }
 
 void Window::createGUI()
@@ -45,20 +68,21 @@ void Window::createGUI()
 
     //add text box
     QTextEdit *te = new QTextEdit();
-    //qe->placeholderText("Type your name here!");
     layout->addWidget(te,1,0);
 
-    //Add animal combo box
-    qb = new QComboBox();
-    qb->insertItem(0,"cat");
-    qb->insertItem(1,"dog");
-    layout->addWidget(qb,2,0);
 
-    //add button
-    QPushButton *button = new QPushButton("Click for Animal Image");
-    layout->addWidget(button,3,0);
+    //add Radio Buttons
+    catButton = new QRadioButton("cat");
+    dogButton = new QRadioButton("dog");
+    bothButton = new QRadioButton("both");
+    layout->addWidget(catButton,2,0);
+    layout->addWidget(dogButton,3,0);
+    layout->addWidget(bothButton,4,0);
 
-    QObject::connect(button, SIGNAL(clicked()),this,SLOT(showMe()));
+    //connect button to images
+    QObject::connect(catButton, SIGNAL(clicked()),this,SLOT(showMeCat()));
+    QObject::connect(dogButton, SIGNAL(clicked()),this,SLOT(showMeDog()));
+    QObject::connect(bothButton, SIGNAL(clicked()),this,SLOT(showMeBoth()));
 
     setWindowTitle(tr("Animals"));
     setLayout(layout);
